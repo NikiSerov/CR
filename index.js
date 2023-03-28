@@ -322,6 +322,8 @@ const seasons = {
   15: ["Генотип зверя"],
 };
 
+const mainPage = document.querySelector(".mainPage");
+const searchPage = document.querySelector(".searchPage");
 const seasonsListContainer = document.querySelector(".seasonsListWrapper");
 const seriesListContainer = document.querySelector(".seriesListWrapper");
 const searchResultsContainer = document.querySelector(
@@ -361,12 +363,12 @@ const selectActiveTab = (e) => {
 };
 
 const toggleSearch = () => {
-  searchInput.classList.toggle("show");
   backBtn.classList.toggle("show");
-  seasonsListContainer.classList.toggle("hide");
-  seriesListContainer.classList.toggle("hide");
   showSearchBtn.classList.toggle("hide");
-  searchResultsContainer.classList.toggle("show");
+
+  mainPage.classList.toggle("hide");
+  searchPage.classList.toggle("show");
+
   searchInput.focus();
 };
 
