@@ -373,7 +373,7 @@ const renderSearchResults = (results) => {
   const resultHTML = results.reduce((acc, cv) => {
     return (
       acc +
-      `<li class="episode"><a href="https://rezka.ag/series/documentary/51548-kriminalnaya-rossiya-1995.html#t:110-s:${cv.season}-e:${cv.episodeNumber}" class="episodeLink">${cv.name}</a></li>`
+      `<li class="episode"><a href="https://rezka.ag/series/documentary/51548-kriminalnaya-rossiya-1995.html#t:110-s:${cv.season}-e:${cv.episodeNumber}" class="episodeLink">${cv.episode}</a></li>`
     );
   }, "");
   searchResultsContainer.innerHTML = `<ol class="seriesList">${resultHTML}</ol>`;
@@ -383,20 +383,19 @@ const handleSearch = (e) => {
   e.preventDefault();
   const data = new FormData(e.target);
   const value = data.get("inputValue");
-  const valueLength = value.length;
-  const allSeries = Object.values(seasons);
   const results = [];
-  allSeries.forEach((season, seasonIndex) => {
-    season.forEach((episode, episodeIndex) => {
-      if (episode.toLowerCase().slice(0, valueLength) === value.toLowerCase()) {
+  for (const season in seasons) {
+    seasons[season].forEach((episode, episodeIndex) => {
+      if (episode.toLowerCase().includes(value.toLowerCase())) {
         results.push({
-          name: episode,
-          season: seasonIndex + 1,
+          season,
+          episode,
           episodeNumber: episodeIndex + 1,
         });
       }
     });
-  });
+  }
+
   renderSearchResults(results);
 };
 

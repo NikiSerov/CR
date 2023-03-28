@@ -21,11 +21,6 @@ body {
     width: 100%;
     min-height: 100vh;
     font-size: 24px;
-    background: url(assets/images/CRBGv2.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
     background-color: black;
 }
 
@@ -76,6 +71,22 @@ textarea {
 
 ::-webkit-scrollbar {
     display: none;
+}
+
+.content {
+    position: absolute;
+    width: 100%;
+}
+
+.bgImg {
+    background: url(assets/images/CRBGv2.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    z-index: -1;
 }
 
 .header {
@@ -206,10 +217,12 @@ textarea {
     cursor: pointer;
     box-shadow: 0 0 15px 0px black;
     transition: border 0.2s, color 0.4s;
+    width: 115px;
+    text-align: center;
 }
 
 .seasonTab:hover {
-    color: red;
+    border: 1px solid red;
 }
 
 .seasonTab.activeTab {
