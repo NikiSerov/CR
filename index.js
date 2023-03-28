@@ -367,9 +367,14 @@ const toggleSearch = () => {
   seriesListContainer.classList.toggle("hide");
   showSearchBtn.classList.toggle("hide");
   searchResultsContainer.classList.toggle("show");
+  searchInput.focus();
 };
 
 const renderSearchResults = (results) => {
+  if (!results.length) {
+    searchResultsContainer.innerHTML = "<p>Нет результатов</p>";
+    return;
+  }
   const resultHTML = results.reduce((acc, cv) => {
     return (
       acc +
@@ -379,7 +384,7 @@ const renderSearchResults = (results) => {
   searchResultsContainer.innerHTML = `<ol class="seriesList">${resultHTML}</ol>`;
 };
 
-const debounce = (func, wait, immediate) => {
+const debounce = (func, wait) => {
   let timeout;
 
   return function executedFunction() {
@@ -388,22 +393,15 @@ const debounce = (func, wait, immediate) => {
 
     const later = function () {
       timeout = null;
-      if (!immediate) func.apply(context, args);
+      func.apply(context, args);
     };
-
-    const callNow = immediate && !timeout;
-
     clearTimeout(timeout);
-
     timeout = setTimeout(later, wait);
-
-    if (callNow) func.apply(context, args);
   };
 };
 
-const search = () => {
-  const input = document.querySelector(".searchInput");
-  const value = input.value;
+const search = (e) => {
+  const value = e.target.value;
   const results = [];
 
   for (const season in seasons) {
@@ -421,6 +419,8 @@ const search = () => {
   renderSearchResults(results);
 };
 
+const handleSearch = debounce(search, 400);
+
 rendersSeasonTabs(seasons);
 
 const seasonTabs = document.querySelectorAll(".seasonTab");
@@ -430,4 +430,4 @@ seasonTabs.forEach((tab) => {
 });
 showSearchBtn.addEventListener("click", toggleSearch);
 backBtn.addEventListener("click", toggleSearch);
-searchInput.addEventListener("keypress", debounce(search, 400, false));
+searchInput.addEventListener("input", handleSearch);

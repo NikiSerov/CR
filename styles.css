@@ -250,3 +250,31 @@ textarea {
 .searchResultsContainer.show {
     display: block;
 }
+
+@media (max-width: 670px) {
+    body {
+        font-size: 20px;
+    }
+
+    .heading {
+        font-size: 38px;
+    }
+
+    .searchSVG {
+        width: 32px;
+        height: 32px;
+    }
+
+    .backSVG {
+        width: 36px;
+        height: 36px;
+    }
+
+    .seasonTab {
+        width: 100px;
+    }
+
+    .searchInput {
+        font-size: 20px;
+    }
+}
