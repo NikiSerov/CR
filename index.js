@@ -329,8 +329,8 @@ const searchResultsContainer = document.querySelector(
 );
 const showSearchBtn = document.querySelector(".showSearchBtn");
 const backBtn = document.querySelector(".backBtn");
-const searchForm = document.querySelector(".searchForm");
 const searchBtn = document.querySelector(".searchBtn");
+const searchInput = document.querySelector(".searchInput");
 
 const rendersSeasonTabs = (seasons) => {
   const seasonTabsHTML = Object.keys(seasons).reduce((acc, cv) => {
@@ -361,7 +361,7 @@ const selectActiveTab = (e) => {
 };
 
 const toggleSearch = () => {
-  searchForm.classList.toggle("show");
+  searchInput.classList.toggle("show");
   backBtn.classList.toggle("show");
   seasonsListContainer.classList.toggle("hide");
   seriesListContainer.classList.toggle("hide");
@@ -379,14 +379,36 @@ const renderSearchResults = (results) => {
   searchResultsContainer.innerHTML = `<ol class="seriesList">${resultHTML}</ol>`;
 };
 
-const handleSearch = (e) => {
-  e.preventDefault();
-  const data = new FormData(e.target);
-  const value = data.get("inputValue");
+const debounce = (func, wait, immediate) => {
+  let timeout;
+
+  return function executedFunction() {
+    const context = this;
+    const args = arguments;
+
+    const later = function () {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+
+    const callNow = immediate && !timeout;
+
+    clearTimeout(timeout);
+
+    timeout = setTimeout(later, wait);
+
+    if (callNow) func.apply(context, args);
+  };
+};
+
+const search = () => {
+  const input = document.querySelector(".searchInput");
+  const value = input.value;
   const results = [];
+
   for (const season in seasons) {
     seasons[season].forEach((episode, episodeIndex) => {
-      if (episode.toLowerCase().includes(value.toLowerCase())) {
+      if (episode?.toLowerCase().includes(value.toLowerCase())) {
         results.push({
           season,
           episode,
@@ -408,4 +430,4 @@ seasonTabs.forEach((tab) => {
 });
 showSearchBtn.addEventListener("click", toggleSearch);
 backBtn.addEventListener("click", toggleSearch);
-searchForm.addEventListener("submit", handleSearch);
+searchInput.addEventListener("keypress", debounce(search, 400, false));
